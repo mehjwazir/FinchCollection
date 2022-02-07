@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Finch 
+from django.views.generic import CreateView, UpdateView, DeleteView
+from .models import Finch
 
 # Create your views here.
 
@@ -19,3 +20,21 @@ def finches_index(request):
 def finches_detail(request, finch_id):
   finch = Finch.objects.get(id=finch_id)
   return render(request, 'finches/detail.html', {'finch': finch})
+
+#Class-Based View (CBV)
+
+
+class FinchCreate(CreateView):
+  model = Finch
+  fields = '__all__'
+
+
+class FinchUpdate(UpdateView):
+  model = Finch
+  # Let's disallow the renaming of a cat by excluding the name field!
+  fields = ['type', 'description', 'age']
+
+
+class FinchDelete(DeleteView):
+  model = Finch
+  success_url = '/finches/'
